@@ -13,6 +13,11 @@ let RandomGreetingWidget = function (recipient) {
     this.setRecipient = (r) => {
         recipient = r;
     };
+
+    div.addEventListener('click', () => {
+        greeting = RandomGreetingWidget.advanceGreeting();
+        message_h2.innerHTML = `${greeting}, ${recipient}!`;
+    });
 }
 
 RandomGreetingWidget.greetings = ['Hello', 'Goodbye', 'What\'s Up', 'Word', 'Hey', 'Looking Good']
