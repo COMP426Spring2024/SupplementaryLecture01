@@ -1,4 +1,23 @@
-let make_message_div = function (message) {
+let RandomGreetingWidget = function (recipient) {
+    this.recipient = recipient;
+    this.greeting = RandomGreetingWidget.advanceGreeting();
+}
+
+RandomGreetingWidget.greetings = ['Hello', 'Goodbye', 'What\'s Up', 'Word', 'Hey', 'Looking Good']
+                                 .map(g => [g, Math.random()])
+                                 .sort((a, b) => a[1] - b[1])
+                                 .map(ag => ag[0]);
+
+RandomGreetingWidget.next_index = 0;
+RandomGreetingWidget.advanceGreeting = function () {
+    let g = RandomGreetingWidget.greetings[RandomGreetingWidget.next_index];
+    RandomGreetingWidget.next_index += 1;
+    RandomGreetingWidget.next_index %= RandomGreetingWidget.greetings.length;
+    return g;
+}
+
+RandomGreetingWidget.prototype.make_message_div =  function () {
+    let message = `${this.greeting}, ${this.recipient}!`;
     let message_div = document.createElement('div');
     let message_h2 = document.createElement('h2');
     message_h2.append(document.createTextNode(message));
@@ -11,11 +30,9 @@ let rig_div = document.getElementById('rig');
 
 let planets = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'];
 
-let greetings = ['Hello', 'Goodbye', 'What\'s Up', 'Word', 'Hey', 'Looking Good'];
 
-// Associate each greeting with a random number
-greetings = greetings.map(g => [g, Math.random()])
-                     .sort((a, b) => a[1] - b[1])
-                     .map(ag => ag[0]);
 
-planets.forEach((p, i) => rig_div.append(make_message_div(`${greetings[i%greetings.length]}, ${p}!`)));
+planets.forEach((p) => {
+    let rgw = new RandomGreetingWidget(p);
+    rig_div.append(rgw.make_message_div());
+});
