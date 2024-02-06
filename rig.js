@@ -1,6 +1,18 @@
 let RandomGreetingWidget = function (recipient) {
-    this.recipient = recipient;
-    this.greeting = RandomGreetingWidget.advanceGreeting();
+    let greeting = RandomGreetingWidget.advanceGreeting();
+
+    let message = `${greeting}, ${recipient}!`;
+    let div = document.createElement('div');
+    let message_h2 = document.createElement('h2');
+    message_h2.append(document.createTextNode(message));
+    div.append(message_h2);
+
+    this.getDiv = () => div;
+    this.getGreeting = () => greeting;
+    this.getRecipient = () => recipient;
+    this.setRecipient = (r) => {
+        recipient = r;
+    };
 }
 
 RandomGreetingWidget.greetings = ['Hello', 'Goodbye', 'What\'s Up', 'Word', 'Hey', 'Looking Good']
@@ -16,15 +28,6 @@ RandomGreetingWidget.advanceGreeting = function () {
     return g;
 }
 
-RandomGreetingWidget.prototype.make_message_div =  function () {
-    let message = `${this.greeting}, ${this.recipient}!`;
-    let message_div = document.createElement('div');
-    let message_h2 = document.createElement('h2');
-    message_h2.append(document.createTextNode(message));
-    message_div.append(message_h2);
-    return message_div;
-}
-
 
 let rig_div = document.getElementById('rig');
 
@@ -34,5 +37,5 @@ let planets = ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus
 
 planets.forEach((p) => {
     let rgw = new RandomGreetingWidget(p);
-    rig_div.append(rgw.make_message_div());
+    rig_div.append(rgw.getDiv());
 });
